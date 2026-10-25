@@ -1,0 +1,1 @@
+console.log("Ambiente TypeScript configurado com sucesso!");
