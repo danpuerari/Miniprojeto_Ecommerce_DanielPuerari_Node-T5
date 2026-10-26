@@ -30,3 +30,36 @@ export function listarProdutos(): Produto[] {
     // Retorna uma cópia do array de produtos para evitar alterações nos registros internos.
     return produtos.map((produto) => ({ ...produto }));
 }
+
+export function buscarProdutoPorId(id: number): Produto | undefined {
+    const produtoEncontrado = produtos.find((produto) => produto.id === id);
+    if (produtoEncontrado === undefined) {
+        return undefined;
+    }
+
+    return {...produtoEncontrado};
+}
+
+export function buscarProdutosPorNome(nome: string): Produto[] {
+    const termoBusca = nome.trim().toLowerCase();
+
+    if (termoBusca === "") {
+        return [];
+    }
+
+    const resultados = produtos.filter((produto) => produto.nome.toLowerCase().includes(termoBusca));
+
+    return resultados.map((produto) => ({ ...produto }));
+}
+
+export function filtrarProdutosPorCategoria(categoria: string): Produto[] {
+    const categoriaBusca = categoria.trim().toLowerCase();
+
+    if (categoriaBusca === "") {
+        return [];
+    }
+
+    const resultados = produtos.filter((produto) => produto.categoria.trim().toLowerCase() === categoriaBusca);
+
+    return resultados.map((produto) => ({ ...produto }));
+}

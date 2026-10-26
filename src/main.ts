@@ -1,5 +1,12 @@
-import { cadastrarProduto, listarProdutos } from "./produtos.js";
-import type { Produto } from "./types.js"
+import {
+    cadastrarProduto,
+    listarProdutos,
+    buscarProdutoPorId,
+    buscarProdutosPorNome,
+    filtrarProdutosPorCategoria
+} from "./produtos.js";
+
+import type { Produto } from "./types.js";
 
 console.log("=== Cadastrando produtos ===");
 
@@ -21,6 +28,26 @@ cadastrarProduto({
 
 console.log("=== Produtos cadastrados ===");
 console.table(listarProdutos());
+
+console.log("\n=== Busca por ID existente ===");
+
+const produtoEncontrado = buscarProdutoPorId(2);
+
+if (produtoEncontrado !== undefined) {
+    console.table([produtoEncontrado]);
+} else {
+    console.log("Produto não encontrado.");
+}
+
+console.log("\n=== Busca por ID inexistente ===");
+
+const produtoInexistente = buscarProdutoPorId(99);
+
+if (produtoInexistente !== undefined) {
+    console.table([produtoInexistente]);
+} else {
+    console.log("Produto não encontrado.");
+}
 
 function testarCadastroInvalido(
     descricao: string,
@@ -112,3 +139,51 @@ testarCadastroInvalido(
         estoque: -2,
     }
 );
+
+console.log("\n=== Busca parcial: 'tec' ===");
+
+const resultadoTeclado = buscarProdutosPorNome("tec");
+if (resultadoTeclado.length > 0) {
+    console.table(resultadoTeclado);
+} else {
+    console.log("Nenhum produto encontrado.");
+}
+
+console.log("\n=== Busca sem diferenciar maiúsculas ===");
+console.table(buscarProdutosPorNome("MOU"));
+
+console.log("\n=== Busca sem correspondências ===");
+
+const resultadoInexistente = buscarProdutosPorNome("xyz");
+if (resultadoInexistente.length > 0) {
+    console.table(resultadoInexistente);
+} else {
+    console.log("Nenhum produto encontrado.");
+}
+
+console.log("\n=== Busca vazia ===");
+console.log(buscarProdutosPorNome("   "))
+
+console.log("\n=== Filtro por categoria: Informática ===");
+
+const produtosInformatica = filtrarProdutosPorCategoria("Informática");
+if (produtosInformatica.length > 0) {
+    console.table(produtosInformatica);
+} else {
+    console.log("Nenhum produto encontrado nessa categoria.");
+}
+
+console.log("\n=== Filtro ignorando maiúsculas e espaços ===");
+console.table(filtrarProdutosPorCategoria("  INFORMÁTICA  "));
+
+console.log("\n=== Filtro por categoria inexistente ===");
+
+const categoriaInexistente = filtrarProdutosPorCategoria("Jardinagem");
+if (categoriaInexistente.length > 0) {
+    console.table(categoriaInexistente);
+} else {
+    console.log("Nenhum produto encontrado nessa categoria.");
+}
+
+console.log("\n=== Filtro por categoria vazia ===");
+console.log(filtrarProdutosPorCategoria("   "));
